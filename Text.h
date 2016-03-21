@@ -1,12 +1,22 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-
-
+#include <vector>
+#include <time.h>
+#include <stdlib.h>
 
 //class representing a Word in a Text
 class Word
 {
+
+struct Probability
+{
+	int counts;
+	float proba;
+	int start;
+	int end;
+};
+
 public:
 	Word() : word(""){}
 	Word(std::string& str) : word(str){}
@@ -23,10 +33,12 @@ public:
 	//return the most probable word
 	const std::string getBestSucc();
 
+	std::map<std::string,  Probability> getSuccessors();
+
 private:
 	std::string word;
 	//map possible successors // associated probability
-	std::map<std::string, float> successors;
+	std::map<std::string, Probability> successors;
 
 };
 

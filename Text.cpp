@@ -4,9 +4,9 @@
 void Word::addSuccessor(const std::string& _str)
 {
 	if(successors.find(_str) == successors.end())
-		successors[_str] = 0;
+		successors[_str].counts = 1;
 	else
-		successors[_str]++;
+		successors[_str].counts++;
 }
 
 void Word::print()
@@ -26,25 +26,34 @@ void Word::computeProba()
 {
 	int somme = 0;
 	for(auto& i : successors)
-		somme += i.second;
+		somme += i.second.counts;
+	int counter = 0;
 	for(auto& i : successors)
-		i.second = i.second / somme;
+	{
+		i.second.proba = i.second.counts / float(somme);
+		int nb = int(i.second.proba*1000);
+		i.second.start = counter;
+		i.second.end = counter+nb;
+		counter += nb+1;
+	}
 }
 
 const std::string Word::getBestSucc()
 {
-	std::string res = "";
-	float max = 0;
+	int random = rand() % 1000;     // range 0 to 1000
+
 	for(auto& i : successors)
 	{
-		if(i.second > max)
-		{
-			max = i.second;
-			res = i.first;
-		}
+		if(i.second.start <= random && i.second.end >= random)
+			return i.first;
 	}
-	return res;
 }
+
+std::map<std::string, Word::Probability> Word::getSuccessors()
+{
+	return successors;
+}
+
 
 
 //====================================================================================================

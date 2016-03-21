@@ -28,6 +28,7 @@ void learn(const std::string& _text, Text& t)
 		t.addWords(word, succ);
 	}while(stop < LEARNING_LENGTH); 
 	t.computeProba();
+	
 }
 
 
@@ -54,6 +55,9 @@ void generateSentence(const std::string& _startWord, Text& _text)
 
 int main()
 {
+	srand (time(NULL));
+
+
 	//learning text : rouge.txt => Le Rouge et le Noir
 	std::ifstream in("rouge.txt");
 	
@@ -70,6 +74,8 @@ int main()
 	Text t;
 	learn(str,t);
 
+
+	
 	generateSentence("Une", t);
 	generateSentence("La", t);
 	generateSentence("à", t);
